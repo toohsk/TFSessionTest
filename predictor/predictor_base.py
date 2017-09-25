@@ -9,9 +9,8 @@ class MnistPredictorBase(metaclass=ABCMeta):
     """
 
     def __init__(self):
-        mnist = input_data()
         self._sess = tf.Session()
-        self._test_data = mnist.test
+        self._test_data = input_data.test
 
     def get_model_metadata_path(self):
         return self.get_model_checkpoint_path()+'.meta'

@@ -5,6 +5,6 @@ class MnistAdadeltaPredictor(MnistPredictorBase):
 
     # override
     def get_model_checkpoint_path(self):
-        return "tmp/"
+        return "/tmp/model/adam/model.ckpt"
 
     

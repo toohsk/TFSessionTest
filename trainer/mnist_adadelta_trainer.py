@@ -147,20 +147,25 @@ def main(_):
     correct_prediction = tf.cast(correct_prediction, tf.float32)
   accuracy = tf.reduce_mean(correct_prediction)
 
-  graph_location = tempfile.mkdtemp()
-  print('Saving graph to: %s' % graph_location)
-  train_writer = tf.summary.FileWriter(graph_location)
+  # graph_location = tempfile.mkdtemp()
+  graph_log_location = "/tmp/logs/adam"
+  print('Saving graph to: %s' % graph_log_location)
+  train_writer = tf.summary.FileWriter(graph_log_location)
   train_writer.add_graph(tf.get_default_graph())
 
   with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
-    for i in range(20000):
+    for i in range(2000):
       batch = mnist.train.next_batch(50)
       if i % 100 == 0:
         train_accuracy = accuracy.eval(feed_dict={
             x: batch[0], y_: batch[1], keep_prob: 1.0})
         print('step %d, training accuracy %g' % (i, train_accuracy))
       train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+
+    save_model_path = '/tmp/model/adadelta/model.ckpt'
+    saver = tf.train.Saver()
+    saver.save(sess, save_model_path)
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
